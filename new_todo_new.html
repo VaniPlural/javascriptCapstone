@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<link href="/CSS/todo.css" rel="stylesheet">
+
+</head>
+
+<body style="background-image: url('./images/abstract.jpeg'); background-repeat:no-repeat; background-size:1500px 1000px";>
+
+   
+    <form id="todoForm"  data-bs-spy="scroll" >
+                <nav class="navbar navbar-expand-lg">
+                  <div class="container-fluid">
+                    <a class="navbar-brand" href="./index.html">
+                      <img src="./images/list.png" alt="Logo" width="60" height="44" class="d-inline-block align-text-top">
+        TaskiO
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                          <a class="nav-link active" 
+                          <a class="nav-link active" data-toggle="tooltip" data-placement="bottom" aria-current="page" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tooltip"data-placement="bottom"  aria-current="page" href="new_user.html">AddUser</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tooltip" aria-current="page" href="new_todo_new.html">AddTask</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tooltip" aria-current="page" href="todo_fetch.html">FetchTask</a>
+                        </li>
+                        
+              
+                      </ul>
+                     
+                     
+              
+                      </div>
+              
+              
+              
+                    </div>
+                  </div>
+                </nav> 
+       
+        <div class="col-sm-8 login-section">
+            <h3 class="header3" >Add Tasks to the User</h3>
+        <div>
+            <label for="userDropdown">Assign To:</label>
+            <select id="userDropdown" name="userid">
+                <option value="" selected disabled>Select a User</option>
+            </select>
+        </div>
+      <br>
+        <div>
+            <label for="categoryDropdown">Category:</label>
+            <select id="categoryDropdown" name="category">
+                <!-- Categories will be populated here dynamically -->
+            </select>
+        </div><br>
+        <div>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" rows="5" cols="50"></textarea>
+        </div><br>
+        <div>
+            <label for="deadline">Start Date</label>
+            <input type="date" id="deadline"  name="deadline">
+        </div><br>
+        <div>
+            <label for="priorityDropdown">Priority:</label>
+            <select id="priorityDropdown" name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+        </div><br>
+        <!-- <a href="./taskAdded.html"><button class="submitBtn" type="submit">Add Task</button></a> -->
+        <button class="submitBtn"  onclick="window.location.replace('taskAdded.html')" type="submit">Add Task </button>
+      </div>
+    </form>
+
+    <script>
+        // Fetch users and populate dropdown
+        fetch('http://localhost:8083/api/users')
+            .then(response => response.json())
+            .then(users => {
+                const userDropdown = document.getElementById('userDropdown');
+                users.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.id;
+                    option.textContent = user.name;
+                    userDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+
+        // Fetch categories and populate dropdown
+        fetch('http://localhost:8083/api/categories')
+            .then(response => response.json())
+            .then(categories => {
+                const categoryDropdown = document.getElementById('categoryDropdown');
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                   // option.textContent = category;
+                    option.value = category.name;
+                    option.textContent = category.name;
+                    categoryDropdown.appendChild(option);   
+                });
+            })
+            .catch(error => console.error('Error fetching categories:', error));
+
+        // Submit form data to create new ToDo task
+        let form=document.querySelector('todoForm');
+        console.log('form=' +form);
+        todoForm.addEventListener('submit',handleSubmit);
+        function handleSubmit(event)
+        { 
+            console.log('inside Add button');
+            event.preventDefault();
+            let formData=new FormData(document.getElementById("todoForm"));
+            let data=Object.fromEntries(formData);
+            let jsonData=JSON.stringify(data);
+            let parsedjson=JSON.parse(jsonData);
+            console.log("Here" + jsonData + parsedjson.userId);
+
+            
+            fetch('http://localhost:8083/api/todos',{
+            method: 'POST',
+            headers: {
+                'Content-Type' :'Application/json'
+            },
+            body :jsonData
+        }).then(response => response.json())
+          .then(result => console.log(result))
+          .catch(err =>console.log(err))
+        }
+        </script>
+        <footer>
+          <div class="mt-5 p-4 bg-light text-secondary text-center">
+      
+            <p>
+              <img src="./images/to-do-list.png" alt="Logo" width="60" height="44" class="d-inline-block align-text-top">
+        <br>
+              
+              &copy;2024 by TaskiO Pvt Ltd. All rights reserved.
+            </p>
+          </div>
+        </footer>
+</body>
+</html>

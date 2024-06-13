@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Template</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="/CSS/sidebar.css"/>
+    <style>
+        /* Custom styles for sidebar */
+        .sidebar {
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+
+        /* Custom styles for login section */
+        .login-section {
+            margin-top: 50px;
+        }
+
+        /* Custom styles for footer */
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="bg-dark text-white text-center py-4">
+    <h1>Orderly Outlook</h1>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-sm-4 sidebar">
+            
+                <div class="card-header">
+                    Keep Structured
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="images/calenderClip.jpeg" alt="Card image cap">
+                      <p class="card-text">Keeping structured entails adhering to a deliberate framework or system, ensuring tasks, activities, and responsibilities are organized and prioritized efficiently. It involves establishing clear objectives, breaking them down into manageable steps, and maintaining a disciplined approach to execution.</p>
+                   
+            
+        </div>
+
+        <!-- Login Section -->
+        <div class="col-sm-8 login-section">
+            
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty space to maintain alignment -->
+        <div class="col-lg-3"></div>
+
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <p>&copy; 2024 My Website. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

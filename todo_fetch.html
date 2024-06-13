@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  
+    <link href="./CSS/todofetch.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+       <!-- <link rel="stylesheet" href="/CSS/todo.css"/>-->
+    <title class="todoTasks">User To-Do Tasks</title>
+</head>
+<style>
+    table,th, td {
+      border: 1px solid black;
+    }
+    </style>
+<body style="background-image: url('./images/plainlightblue.jpeg'); background-blend-mode:normal;background-repeat:no-repeat; background-size:1500px 1000px";>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./index.html">
+            <img src="./images/list.png" alt="Logo" width="60" height="44" class="d-inline-block align-text-top">
+            TaskiO
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" 
+              <a class="nav-link active" data-toggle="tooltip" data-placement="bottom" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tooltip"data-placement="bottom"  aria-current="page" href="new_user.html">AddUser</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tooltip" aria-current="page" href="new_todo_new.html">AddTask</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tooltip" aria-current="page" href="todo_fetch.html">FetchTask</a>
+            </li>
+          </ul>
+          </div>
+        </div>
+      </div>
+    </nav> 
+  
+    <h1 class="userTodo">User To-Do Tasks</h1>
+    <div>
+        <label for="usersDropdown">Select User:</label>
+        <select id="usersDropdown" onchange="fetchUserTodos(this.value)">
+            <option value="" selected disabled>Select a User</option>
+        </select>
+    </div>
+    <div id="userTodos">
+       
+        <!-- To-Do tasks for selected user will be displayed here -->
+        <div id="symbol"></div>
+    </div>
+
+    <script>
+        
+        // Function to fetch and display user's to-do tasks
+        function fetchUserTodos(userId) {
+            console.log("userId=" + userId);
+            // Clear previous user's to-do tasks
+            document.getElementById('userTodos').innerHTML = '';
+
+            // Fetch user's to-do tasks
+            fetch(`http://localhost:8083/api/todos/byuser/${userId}`)
+                .then(response => response.json())
+                .then(todos => {
+                    console.log(`http://localhost:8083/api/todos/byuser/${userId}`);
+                    const userTodosDiv = document.getElementById('userTodos');
+                    const userTodosHeader = document.createElement('h2');
+                  //  userTodosHeader.textContent = "To-Do Tasks:";
+                    userTodosDiv.appendChild(userTodosHeader);
+                    if (todos.length === 0) {
+                        const noTodosMessage = document.createElement('p');
+                        noTodosMessage.textContent = "No to-do tasks found for this user.";
+                        userTodosDiv.appendChild(noTodosMessage);
+                    } else {
+                        var table = document.createElement("TABLE");
+                            var header = document.createElement("TR");
+                            var headerCol1 = document.createElement("TD");
+                            headerCol1.textContent = "ID";
+                            var headerCol2 = document.createElement("TD");
+                            headerCol2.textContent = "Category";
+                            var headerCol3 = document.createElement("TD");
+                            headerCol3.textContent = "Description";
+                            var headerCol4= document.createElement("TD");
+                            headerCol4.textContent = "Deadline";
+                            var headerCol5 = document.createElement("TD");
+                            headerCol5.textContent = "Priority";
+                            var headerCol6 = document.createElement("TD");
+                            headerCol6.textContent = "Is Completed";
+                           
+                            header.appendChild(headerCol1);
+                            header.appendChild(headerCol2);
+                            header.appendChild(headerCol3);
+                            header.appendChild(headerCol4);
+                            header.appendChild(headerCol5);
+                            header.appendChild(headerCol6);
+                            table.appendChild(header);
+                        todos.forEach(todo => {
+                            var createRow = document.createElement("TR");
+                            var createCol1 = document.createElement("TD"); 
+                            var createCol2 = document.createElement("TD"); 
+                            var createCol3 = document.createElement("TD"); 
+                            var createCol4 = document.createElement("TD"); 
+                            var createCol5 = document.createElement("TD"); 
+                            var createCol6 = document.createElement("TD");
+                            //createCol6.setAttribute("id","symbol");
+                            createCol1.textContent = todo.userid;
+                            createCol2.textContent = todo.category;
+                            createCol3.textContent = todo.description;
+                            createCol4.textContent = todo.deadline;
+                            createCol5.textContent = todo.priority;
+                            
+                            var span = document.createElement("span");
+                            span.style.fontFamily = "wingdings";
+                            span.style.fontSize="200%";
+                            console.log(todo.category+"-------"+todo.completed);
+                            if(todo.completed){
+                                span.textContent="✓";
+                            }else{
+                                span.textContent="✘";
+                            }
+                            
+                            createCol6.appendChild(span);
+                         
+                            
+                           
+                           
+                            createRow.appendChild(createCol1);
+                            createRow.appendChild(createCol2);
+                            createRow.appendChild(createCol3);
+                            createRow.appendChild(createCol4);
+                            createRow.appendChild(createCol5);
+                            createRow.appendChild(createCol6);
+
+
+                            table.appendChild(createRow);
+                           
+            //createTable.setAttribute("id", "myTable");
+ // document.body.appendChild(createTable);
+
+  
+                            // todosUlTag.appendChild(liCat);
+                          //  createTable.textContent+=todo.id;
+                    
+                            // createTable.textContent += todo.userid;
+                            // createTable.textContent += todo.category;
+                            // createTable.textContent += todo.description;
+                            // createTable.textContent += todo.deadline;
+                            // createTable.textContent += todo.priority;
+                            // console.log("createTable=" +createTable);
+
+                            /*liCat.textContent += todo.completed;
+                            liCat.textContent += todo.id;
+                            liCat.textContent += todo.userid;
+                            liCat.textContent += todo.category;
+                            liCat.textContent += todo.description;
+                            liCat.textContent += todo.deadline;
+                            liCat.textContent += todo.priority;
+
+                            liCat.textContent += todo.completed;*/
+
+                         
+                          //  document.body.appendChild(createTable);
+                            //todosUlTag.appendChild(liCat);
+
+                            // var createRow = document.createElement("TR");
+                            // createRow.textContent += todo.userid;
+                            // createRow.textContent += todo.category;
+                            // createRow.textContent += todo.description;
+                            // createRow.textContent += todo.deadline;
+                            // createRow.textContent += todo.priority;
+                            // console.log("createRow=" +createRow);
+                            // document.getElementById("myTable").appendChild(createRow);
+
+                            //  var createCol = document.createElement("TD");
+                            //  var createCell = document.createTextNode("cell");
+                            //  console.log("createCell=" +createCell);
+                            //  createCol.appendChild(createCell);
+                             //document.getElementById("myTr").appendChild(createCol);
+
+                        });
+                        document.getElementById("userTodos").appendChild(table); 
+                       // document.getElementById("myTr").appendChild(createCol);
+                        //userTodosDiv.appendChild(todosUlTag);
+                    }
+                })
+                .catch(error => console.error('Error fetching todos:', error));
+        }
+
+        // Fetch users and populate dropdown
+        fetch('http://localhost:8083/api/users')
+            .then(response => response.json())
+            .then(users => {
+                const usersDropdown = document.getElementById('usersDropdown');
+                users.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.id;
+                    option.textContent = user.name;
+                    usersDropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching users:', error));
+    </script>
+    <footer>
+        <div class="mt-5 p-4 bg-light text-secondary text-center">
+    
+          <p>
+            <img src="./images/to-do-list.png" alt="Logo" width="60" height="44" class="d-inline-block align-text-top">
+            <br>
+            
+            &copy;2024 by TaskiO Pvt Ltd. All rights reserved.
+          </p>
+        </div>
+      </footer>
+</body>
+
+</html>

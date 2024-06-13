@@ -1,0 +1,36 @@
+.card{
+    border: 5rem;
+    
+    width: 35%;
+    height:40%;
+    border-radius: 40px;
+    border-color: aqua;
+
+}
+.card-text{
+text-align: center;
+color: orange;
+word-wrap: normal;
+align-items: center;
+
+
+}
+.card-header{
+    font-family: cursive;
+    font-weight:bold;
+   
+
+
+}
+body{
+    padding-top: 40px;
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+    max-height: 100vh;
+     /*background :url(/images/black.png) no-repeat;*/
+     background :url(/images/orangeleaves1.jpeg)no-repeat ;
+     background-color:rgb(220, 243, 245);
+    background-position:center;
+
+}
